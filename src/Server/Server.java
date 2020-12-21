@@ -62,15 +62,11 @@ public class Server {
             Offer winner = Data.offer.get(String.valueOf(max.isPresent() ?  max.getAsInt() : null));
             Data.winner = winner;
 
-            this.listOfThread.forEach(t ->  t.winner(winner.getClient()));
+            this.listOfThread.forEach(t -> t.winner(winner.getClient()) );
 
             System.out.println(winner.toString() + " con offerto di " + (max.isPresent() ? max.getAsInt() : null));
 
-            try {
-                this.serverSocket.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+            System.exit(0);
         }
     }
 
@@ -88,7 +84,7 @@ public class Server {
             @Override
             public void run() {
 
-                if (Data.timer == Data.timeEnd){
+                if (Data.timer  == Data.timeEnd){
                     System.out.println("\n\t\t\t\t\t\t\t\t\t Time finished");
                     timer.cancel();
                 }

@@ -16,10 +16,11 @@ public class Client {
 
     private final Common common = new Common();
     private final Socket socket;
-
+    private boolean isAlive;
 
     public Client() throws IOException {
         this.socket = new Socket("localhost", 2020);
+        this.isAlive = true;
         this.checkTime();
     }
 
@@ -35,7 +36,7 @@ public class Client {
 
         this.register();
 
-        while (true) {
+        while (this.isAlive) {
 
             String choose = this.menu();
 
@@ -52,7 +53,7 @@ public class Client {
 
                         this.common.clear();
 
-                        while (true) {
+                        while (this.isAlive) {
                             this.common.sendData(this.socket, "1.1");
                             System.out.println(this.common.readData(this.socket) + "\n");
 
@@ -151,9 +152,10 @@ public class Client {
 
     public void timeout(){
         if (Data.timer == Data.timeEnd) {
+            System.out.println("call");
             try {
+                this.isAlive = false;
                 System.out.println("\n\t\t\t\t\t\t " + this.common.readData(this.socket));
-                this.common.sendData(this.socket, "0");
                 this.socket.close();
                 System.out.println("Connection closed");
             } catch (IOException e) {

@@ -15,6 +15,7 @@ import java.net.Socket;
 public class MangeRequestByThreads extends Thread {
 
     private final Socket socket;
+    private boolean isAlive;
     private RegistrationClient client;
     private final Common common = new Common();
     private final CrudOperation crudOperation = new CrudOperation();
@@ -44,6 +45,7 @@ public class MangeRequestByThreads extends Thread {
     @Override
     public void run(){
         try {
+            this.isAlive = true;
             this.serveClient();
         } catch (IOException e) {
             System.out.println("error ==> " + e.getMessage());
@@ -63,7 +65,7 @@ public class MangeRequestByThreads extends Thread {
 
         this.__register();
 
-        while (true) {
+        while (this.isAlive) {
             String choose = common.readData(this.socket);
 
             if (choose.contains("1-")){
@@ -151,11 +153,17 @@ public class MangeRequestByThreads extends Thread {
     public void winner(RegistrationClient client) {
         try {
             if (client.equals(this.client))
-                this.common.sendData(this.socket, Data.winner.toString());
+                this.common.sendData(this.socket, "congratulations, you won  ");
             else
-                this.common.sendData(this.socket, "you are lose :(");
+                this.common.sendData(this.socket, "sorry, you lost :(");
 
-        }catch (IOException e){
+            this.isAlive = false;
+
+            sleep(1000);
+
+            this.socket.close();
+
+        }catch (IOException | InterruptedException e){
             System.out.println("can not send data for user cause ==>" + e.getMessage());
         }
 
