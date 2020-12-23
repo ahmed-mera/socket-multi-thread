@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client {
 
@@ -21,7 +21,6 @@ public class Client {
     public Client() throws IOException {
         this.socket = new Socket("localhost", 2020);
         this.isAlive = true;
-        this.checkTime();
     }
 
 
@@ -32,6 +31,7 @@ public class Client {
      * @throws IOException type {@linkplain IOException }
      */
     public void start() throws IOException {
+        this.checkTime();
         String price;
 
         this.register();
@@ -143,21 +143,31 @@ public class Client {
 
 
     public void checkTime() {
-        Executors
-                .newScheduledThreadPool(1)
-                        .scheduleAtFixedRate(this::timeout, 0, 1, TimeUnit.SECONDS);
+
+        Timer timer = new Timer();
+
+          Client c = this;
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                c.timeout();
+            }
+        }, 0, 1000);
+
+
     }
 
 
 
     public void timeout(){
         if (Data.timer == Data.timeEnd) {
-            System.out.println("call");
+            this.isAlive = false;
             try {
-                this.isAlive = false;
                 System.out.println("\n\t\t\t\t\t\t " + this.common.readData(this.socket));
                 this.socket.close();
                 System.out.println("Connection closed");
+                System.exit(0);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

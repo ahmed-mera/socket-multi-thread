@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 public class Server {
@@ -46,9 +44,19 @@ public class Server {
 
 
     public void checkTime() {
-        Executors
-                .newScheduledThreadPool(1)
-                    .scheduleAtFixedRate(this::timeout, 0, 1, TimeUnit.SECONDS);
+
+        Timer timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Server.INSTANCE.timeout();
+            }
+        }, 0, 1000);
+
+//        Executors
+//                .newScheduledThreadPool(1)
+//                    .scheduleAtFixedRate(this::timeout, 0, 1, TimeUnit.SECONDS);
     }
 
 
@@ -64,7 +72,7 @@ public class Server {
 
             this.listOfThread.forEach(t -> t.winner(winner.getClient()) );
 
-            System.out.println(winner.toString() + " con offerto di " + (max.isPresent() ? max.getAsInt() : null) + "\n");
+            System.out.println(winner.toString() + " con offerta di " + (max.isPresent() ? max.getAsInt() : null) + "\n");
 
             System.exit(0);
         }
