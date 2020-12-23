@@ -8,7 +8,7 @@ public class Main1 {
         try {
             (new Client()).start();
         } catch (IOException e) {
-            System.out.println("\n connection closed.... ==>" + e.getMessage());
+            System.out.println("\n connection closed.... ==> " + e.getMessage());
             System.exit(0);
         }
 

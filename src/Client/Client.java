@@ -47,7 +47,7 @@ public class Client {
                     this.print(this.common.readData(this.socket));
 
 
-                    while (!choose.equals("0")) {
+                    while (!choose.equals("0") && this.isAlive) {
                         System.out.print(" \tscegli un oggetto:_");
                         choose = this.common.cleanSpace((new BufferedReader(new InputStreamReader(System.in))).readLine());
 

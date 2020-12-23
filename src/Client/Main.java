@@ -9,7 +9,7 @@ public class Main {
         try {
             (new Client()).start();
         } catch (IOException e) {
-            System.out.println("\n connection closed.... ==>" + e.getMessage());
+            System.out.println("\n connection closed.... ==> " + e.getMessage());
             System.exit(0);
         }
 

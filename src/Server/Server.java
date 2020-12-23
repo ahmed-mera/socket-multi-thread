@@ -64,7 +64,7 @@ public class Server {
 
             this.listOfThread.forEach(t -> t.winner(winner.getClient()) );
 
-            System.out.println(winner.toString() + " con offerto di " + (max.isPresent() ? max.getAsInt() : null));
+            System.out.println(winner.toString() + " con offerto di " + (max.isPresent() ? max.getAsInt() : null) + "\n");
 
             System.exit(0);
         }

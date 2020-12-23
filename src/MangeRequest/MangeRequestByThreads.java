@@ -48,7 +48,7 @@ public class MangeRequestByThreads extends Thread {
             this.isAlive = true;
             this.serveClient();
         } catch (IOException e) {
-            System.out.println("error ==> " + e.getMessage());
+            System.out.println( super.getName() + " ==> " + e.getMessage());
         }
     }
 
@@ -164,7 +164,7 @@ public class MangeRequestByThreads extends Thread {
             this.socket.close();
 
         }catch (IOException | InterruptedException e){
-            System.out.println("can not send data for user cause ==>" + e.getMessage());
+            System.out.println("can not send data for user cause ==> " + e.getMessage());
         }
 
     }
