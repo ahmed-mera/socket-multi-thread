@@ -65,14 +65,14 @@ public class Server {
         if (Data.timer == Data.timeEnd) {
             this.isAlive = false;
             
-            OptionalInt max = Arrays.stream(Data.offer.keySet().toArray(new String[0])).mapToInt(Integer::parseInt).max();
+            OptionalLong max = Arrays.stream(Data.offer.keySet().toArray(new String[0])).mapToLong(Long::parseLong).max();
 
-            Offer winner = Data.offer.get(String.valueOf(max.isPresent() ?  max.getAsInt() : null));
+            Offer winner = Data.offer.get(String.valueOf(max.isPresent() ?  max.getAsLong() : null));
             Data.winner = winner;
 
             this.listOfThread.forEach(t -> t.winner(winner.getClient()) );
 
-            System.out.println(winner.toString() + " con offerta di " + (max.isPresent() ? max.getAsInt() : null) + "\n");
+            System.out.println(winner.toString() + " con offerta di " + (max.isPresent() ? max.getAsLong() : null) + "\n");
 
             System.exit(0);
         }
